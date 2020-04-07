@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
+import pysrt
+import os
 import datetime
 import re
 
@@ -216,12 +218,20 @@ class Gui:
     def ofile(self):
         #OPEN FILE CODE FOR GUI 
 
-        opfile = filedialog.askopenfilename(initialdir=r"C:\Users\Parme\Documents\Downloads",title="Select",filetypes=(('TEXT DOCUMENT',"*.txt"),("All Files","")))
-        self.path = str(opfile)
+        opfile = filedialog.askopenfilename(initialdir=r"C:\Users\Parme\Documents\Downloads",title="Select",filetypes=(('Subtitle File',"*.srt"),("All Files","")))
+
+        su = pysrt.open(str(opfile))
+
+        txf = open(r"C:\Users\Parme\Desktop\temp.txt",mode='a')
+
+        for i in range(len(su)):
+          txf.write(str(su[i]))
+          txf.write('\n')
+
+        self.path = r"C:\Users\Parme\Desktop\temp.txt"
 
     def mai(self):
         self.i = 1
-        print("I AM HERE")
         self.take_time()
         self.timex()
         self.daixx()
@@ -238,6 +248,7 @@ class Gui:
             self.time_incf()
             self.i = self.i + 1
 
+        os.remove(r"C:\Users\Parme\Desktop\temp.txt")
         messagebox.showinfo( "Message", "File is Ready on Desktop")
 
 class Work(Gui):
@@ -327,7 +338,7 @@ class Work(Gui):
     def time_incf(self):
 
         gate = True
-        f = open(r"C:\Users\Parme\Desktop\subs.txt",mode='a')
+        f = open(r"C:\Users\Parme\Desktop\Updated_Subs.srt",mode='a')
         while(gate == True):
             f.write(str(self.i))
             f.write("\n")
